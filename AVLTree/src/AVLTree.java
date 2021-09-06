@@ -1,28 +1,65 @@
 
 public class AVLTree {
-	Node root;
-	AVLTree(String data) {
+	private Node root;
+	AVLTree() {
 		this.root = null;
 	}
 	
 	void insert(String data){
 		Node insertnode = new Node(data);
-		Node rootnode = root;
+		Node curnode = root;
 		
-		if( rootnode == null) // AVL 트리의 첫 노드
+		if( curnode == null) // AVL 트리의 첫 노드
 		{
 			this.root = insertnode;
 			return;
 		}
 		
-		if(  )
-		while()
+		while(true)
+		{
+			if(curnode.getData().compareTo(data) > 0) //data가 사전적으로 앞으로 있는 케이스
+			{	
+				if(curnode.getLeftNode() != null)	//다음 노드가 있다면 그 노드로 이동하여 비교
+					curnode = curnode.getLeftNode();
+				
+				else	//다음 노드가 null이라면 해당 위치가 현재 노드가 들어갈 위치
+				{
+					curnode.setLeftNode(insertnode);
+					insertnode.setParent(curnode);
+					break;
+				}
+			}
+			else if(curnode.getData().compareTo(data) < 0) //data가 사전적으로 뒤에있는 케이스
+			{
+				if(curnode.getRightNode() != null) //다음 노드가 있다면 그 노드로 이동하여 비교
+					curnode = curnode.getRightNode();
+				
+				else	//다음 노드가 null이라면 해당 위치가 현재 노드가 들어갈 위치
+				{
+					curnode.setRightNode(insertnode);
+					insertnode.setParent(curnode);
+					break;
+				}
+			}
+			else
+				return; //중복키에 대해서는 삽입 x
+		}
 	}
 	
+	void PreOrder(Node curnode){
+		if(curnode == null)
+			return;
+		
+		System.out.print(curnode.getData());
+		PreOrder(curnode.getLeftNode());
+		PreOrder(curnode.getRightNode());
+	}
 	
+	Node getRoot() {
+		return this.root;
+	}
 	
-	
-	/*--------------------노드 클래스---------------------------*/
+	/*------------------------노드 클래스---------------------------*/
 	public class Node{
 		private Node parent;
 		private Node left;
@@ -75,8 +112,17 @@ public class AVLTree {
 	}
 	/*--------------------노드 클래스---------------------------*/
 	public static void main(String[] args) {
+		AVLTree AVL = new AVLTree();
 		
-
+		AVL.insert("c");
+		AVL.insert("r");
+		AVL.insert("j");
+		AVL.insert("h");
+		AVL.insert("a");
+		AVL.insert("b");
+		
+		AVL.PreOrder(AVL.getRoot());
+		
 	}
 
 }
