@@ -1,3 +1,5 @@
+import java.util.*;
+//import java.io.*;
 
 public class AVLTree {
 	private Node root;
@@ -26,6 +28,7 @@ public class AVLTree {
 				{
 					curnode.setLeftNode(insertnode);
 					insertnode.setParent(curnode);
+					insertnode.setHeight(Math.max(insertnode.getLeftNode().getHeight(), insertnode.getRightNode().getHeight()) + 1);
 					break;
 				}
 			}
@@ -38,6 +41,7 @@ public class AVLTree {
 				{
 					curnode.setRightNode(insertnode);
 					insertnode.setParent(curnode);
+					insertnode.setHeight(Math.max(insertnode.getLeftNode().getHeight(), insertnode.getRightNode().getHeight()) + 1);
 					break;
 				}
 			}
@@ -45,6 +49,7 @@ public class AVLTree {
 				return; //중복키에 대해서는 삽입 x
 		}
 	}
+	
 	
 	void PreOrder(Node curnode){
 		if(curnode == null)
@@ -65,12 +70,12 @@ public class AVLTree {
 		private Node left;
 		private Node right;
 		String data;
-		//int height;
+		int height;
 		
 		Node(String data){
 			this.left = this.right = null;
 			this.data = data;
-			//this.height = -1;
+			this.height = 1;
 		}
 		void setParent(Node node) {
 			this.parent = node;
@@ -102,13 +107,13 @@ public class AVLTree {
 			return this.data;
 		}
 		
-		/*void setHeight(int height) {
+		void setHeight(int height) {
 			this.height = height;
 		}
 		
 		int getHeight() {
 			return this.height;
-		}*/
+		}
 	}
 	/*--------------------노드 클래스---------------------------*/
 	public static void main(String[] args) {
