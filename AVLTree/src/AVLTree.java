@@ -7,49 +7,67 @@ public class AVLTree {
 		this.root = null;
 	}
 	
-	void insert(String data){
-		Node insertnode = new Node(data);
-		Node curnode = root;
+	Node insert(Node node, String data){
+		if(node == null)
+			return (new Node(data));
 		
-		if( curnode == null) // AVL 트리의 첫 노드
+		if(node.getData().compareTo(data) > 0) //data가 사전적으로 앞으로 있는 케이스
+			node.setLeftNode(insert(node.getLeftNode(), data));
+		
+		else if(node.getData().compareTo(data) < 0)	//data가 사전적으로 뒤에 있는 케이스
+			node.setRightNode(insert(node.getRightNode(), data));
+			
+		else	//data가 같으면 삽입 x
+			return null;
+		
+		//노드의 높이 계산
+		node.setHeight(Math.max(node.getLeftNode().getHeight(), node.getRightNode().getHeight()) + 1);
+		
+		//밸런스 팩터 연산
+		int BF = getBF(node);
+		
+		//LL 좌측으로 뻗은 케이스
+		if(BF > 1 && node.getData().compareTo(data) > 0)	
 		{
-			this.root = insertnode;
-			return;
+			//LL이므로 회전은 우측 회전 한번
+			node.getLeftNode().setRightNode(node);
+			node.setParent(node.getLeftNode());
+		}
+		//LR 좌측우측으로 뻗은 케이스
+		if(BF > 1 && node.getData().compareTo(data) < 0)
+		{
+			//LR에서는 왼쪽 오른쪽 회전 한번씩
+			node.setLeftNode(node.getLeftNode().getRightNode()); //왼쪽으로 회전
+		}
+		//RL 우측좌측으로 뻗은 케이스
+		if(BF < -1 && node.getData().compareTo(data) > 0)
+		{
+			//LR에서는 오른쪽 왼쪽 회전 한번씩
+		}
+		//RR 우측우측으로 뻗은 케이스
+		if(BF < -1 && node.getData().compareTo(data) < 0)
+		{
+			//RR이므로 죄측으로 회전 한번
+			node.getRightNode().setLeftNode(node);
+			node.setParent(node.getRightNode());
 		}
 		
-		while(true)
-		{
-			if(curnode.getData().compareTo(data) > 0) //data가 사전적으로 앞으로 있는 케이스
-			{	
-				if(curnode.getLeftNode() != null)	//다음 노드가 있다면 그 노드로 이동하여 비교
-					curnode = curnode.getLeftNode();
-				
-				else	//다음 노드가 null이라면 해당 위치가 현재 노드가 들어갈 위치
-				{
-					curnode.setLeftNode(insertnode);
-					insertnode.setParent(curnode);
-					insertnode.setHeight(Math.max(insertnode.getLeftNode().getHeight(), insertnode.getRightNode().getHeight()) + 1);
-					break;
-				}
-			}
-			else if(curnode.getData().compareTo(data) < 0) //data가 사전적으로 뒤에있는 케이스
-			{
-				if(curnode.getRightNode() != null) //다음 노드가 있다면 그 노드로 이동하여 비교
-					curnode = curnode.getRightNode();
-				
-				else	//다음 노드가 null이라면 해당 위치가 현재 노드가 들어갈 위치
-				{
-					curnode.setRightNode(insertnode);
-					insertnode.setParent(curnode);
-					insertnode.setHeight(Math.max(insertnode.getLeftNode().getHeight(), insertnode.getRightNode().getHeight()) + 1);
-					break;
-				}
-			}
-			else
-				return; //중복키에 대해서는 삽입 x
-		}
+		return node;
 	}
 	
+	int getBF(Node node) {
+		if(node == null)
+			return 0;
+		
+		return node.getLeftNode().getHeight() - node.getRightNode().getHeight();
+	}
+	
+	int getHeight(Node node) {
+		if(node == null)
+			return 0;
+		
+		return node.getHeight();
+	}
 	
 	void PreOrder(Node curnode){
 		if(curnode == null)
@@ -58,6 +76,9 @@ public class AVLTree {
 		System.out.print(curnode.getData());
 		PreOrder(curnode.getLeftNode());
 		PreOrder(curnode.getRightNode());
+	}
+	void setRoot(Node node) {
+		this.root = node;
 	}
 	
 	Node getRoot() {
@@ -106,11 +127,9 @@ public class AVLTree {
 		String getData() {
 			return this.data;
 		}
-		
-		void setHeight(int height) {
-			this.height = height;
+		void setHeight(int h) {
+			this.height = h;
 		}
-		
 		int getHeight() {
 			return this.height;
 		}
@@ -118,16 +137,40 @@ public class AVLTree {
 	/*--------------------노드 클래스---------------------------*/
 	public static void main(String[] args) {
 		AVLTree AVL = new AVLTree();
-		
-		AVL.insert("c");
-		AVL.insert("r");
-		AVL.insert("j");
-		AVL.insert("h");
-		AVL.insert("a");
-		AVL.insert("b");
+
+		AVL.insert(AVL.getRoot(), "c");
 		
 		AVL.PreOrder(AVL.getRoot());
 		
 	}
 
 }
+
+/*while(true)
+{
+	if(curnode.getData().compareTo(data) > 0) //data가 사전적으로 앞으로 있는 케이스
+	{	
+		if(curnode.getLeftNode() != null)	//다음 노드가 있다면 그 노드로 이동하여 비교
+			curnode = curnode.getLeftNode();
+		
+		else	//다음 노드가 null이라면 해당 위치가 현재 노드가 들어갈 위치
+		{
+			curnode.setLeftNode(insertnode);
+			insertnode.setParent(curnode);
+			break;
+		}
+	}
+	else if(curnode.getData().compareTo(data) < 0) //data가 사전적으로 뒤에있는 케이스
+	{
+		if(curnode.getRightNode() != null) //다음 노드가 있다면 그 노드로 이동하여 비교
+			curnode = curnode.getRightNode();
+		
+		else	//다음 노드가 null이라면 해당 위치가 현재 노드가 들어갈 위치
+		{
+			curnode.setRightNode(insertnode);
+			insertnode.setParent(curnode);
+			break;
+		}
+	}
+	else
+		return; //중복키에 대해서는 삽입 x*/
