@@ -7,24 +7,32 @@ public class AVLTree {
 		this.root = null;
 	}
 	
-	Node insert(Node node, String data){
+	private Node insert(Node node, String data){
 		if(node == null)
 		{
 			Node newnode = new Node(data);
-			this.setRoot(newnode);
+			
+			if(this.root == null)
+				this.setRoot(newnode);
+			
 			return newnode;
 		}
-		
 		if(node.getData().compareTo(data) > 0) //data가 사전적으로 앞으로 있는 케이스
+		{
 			node.setLeftNode(this.insert(node.getLeftNode(), data));
+			node.getLeftNode().setParent(node);
+		}
 		
 		else if(node.getData().compareTo(data) < 0)	//data가 사전적으로 뒤에 있는 케이스
+		{
 			node.setRightNode(this.insert(node.getRightNode(), data));
+			node.getRightNode().setParent(node);
+		}
 			
 		else	//data가 같으면 삽입 x
 			return null;
 		
-		//만들어진 노드의 parent의 높이 계산
+		//노드의 높이 계산
 		node.setHeight(Math.max(getHeight(node.getLeftNode()), getHeight(node.getRightNode())+ 1));
 		
 		//밸런스 팩터 연산
@@ -68,9 +76,13 @@ public class AVLTree {
 			}
 		}
 		
-		this.root = renewRoot(root);
-		
+		this.root = node;
 		return node;
+	}
+	void insert(String data){
+		this.insert(this.root, data);
+		System.out.print(data + "삽입\n");
+		//this.renewRoot(this.root);
 	}
 	
 	private int getBF(Node node) {
@@ -125,7 +137,7 @@ public class AVLTree {
 		return this.root;
 	}
 	
-	private Node renewRoot(Node node) {
+	void renewRoot(Node node) {
 		Node new_root = node;
 		while(new_root.getParent() != null)
 		{
@@ -133,7 +145,7 @@ public class AVLTree {
 			System.out.print(new_root.getData());
 		}
 		
-		return new_root;
+		this.root = new_root;
 	}
 	
 	private int getHeight(Node node) {
@@ -195,14 +207,13 @@ public class AVLTree {
 	public static void main(String[] args) {
 		AVLTree AVL = new AVLTree();
 
-		AVL.insert(AVL.getRoot(), "c");
-		AVL.insert(AVL.getRoot(), "b");
-		AVL.insert(AVL.getRoot(), "f");
-		AVL.insert(AVL.getRoot(), "k");
-		AVL.insert(AVL.getRoot(), "a");
-		
+		AVL.insert("a");
+		AVL.insert("b");
+		AVL.insert("c");
+		AVL.insert("d");
+		AVL.insert("e");
+
 		AVL.PreOrder(AVL.getRoot());
-		
 	}
 
 }
