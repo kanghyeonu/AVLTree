@@ -18,40 +18,40 @@ public class AVLTree {
 			return newnode;
 		}
 		
-		if(node.getData().compareTo(data) > 0) //data°¡ »çÀüÀûÀ¸·Î ¾ÕÀ¸·Î ÀÖ´Â ÄÉÀÌ½º
+		if(node.getData().compareTo(data) > 0) //dataê°€ ì‚¬ì „ì ìœ¼ë¡œ ì•ìœ¼ë¡œ ìˆëŠ” ì¼€ì´ìŠ¤
 			node.setLeftNode(this.insert(node.getLeftNode(), data));
 		
-		else if(node.getData().compareTo(data) < 0)	//data°¡ »çÀüÀûÀ¸·Î µÚ¿¡ ÀÖ´Â ÄÉÀÌ½º
+		else if(node.getData().compareTo(data) < 0)	//dataê°€ ì‚¬ì „ì ìœ¼ë¡œ ë’¤ì— ìˆëŠ” ì¼€ì´ìŠ¤
 			node.setRightNode(this.insert(node.getRightNode(), data));
 
-		else	//data°¡ °°À¸¸é »ğÀÔ x
+		else	//dataê°€ ê°™ìœ¼ë©´ ì‚½ì… x
 			return null;
 		
-		//³ëµåÀÇ ³ôÀÌ °è»ê
+		//ë…¸ë“œì˜ ë†’ì´ ê³„ì‚°
 		node.setHeight(Math.max(getHeight(node.getLeftNode()), getHeight(node.getRightNode())) + 1);
 		
-		//¹ë·±½º ÆÑÅÍ ¿¬»ê
+		//ë°¸ëŸ°ìŠ¤ íŒ©í„° ì—°ì‚°
 		int BF = getBF(node);
 		
 		Node temp;
 		
-		//ÁÂÃøÀ¸·Î »¸Àº ÄÉÀÌ½º
+		//ì¢Œì¸¡ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 		if(BF > 1)	
 		{
-			//LL ¿ŞÂÊ ¿ŞÂÊÀ¸·Î »¸Àº ÄÉÀÌ½º
+			//LL ì™¼ìª½ ì™¼ìª½ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 			if(node.getLeftNode().getData().compareTo(data) > 0)
 			{
-				//¿ìÃøÀ¸·Î ÇÑ¹ø È¸Àü
+				//ìš°ì¸¡ìœ¼ë¡œ í•œë²ˆ íšŒì „
 				temp = rightRotation(node);
 				this.root = temp;
 				return temp;
 						
 			}
 			
-			//LR ¿ŞÂÊ ¿À¸¥ÂÊÀ¸·Î »¸Àº ÄÉÀÌ½º
+			//LR ì™¼ìª½ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 			else 
 			{
-				//±âÁ¸ ³ëµåÀÇ rightchild¸¦ ±âÁØÀ¸·Î ¿ìÃø È¸Àü ÈÄ, ´Ù½Ã ÀÚ±â ±âÁØÀ¸·Î ÁÂÃøÈ¸Àü
+				//ê¸°ì¡´ ë…¸ë“œì˜ rightchildë¥¼ ê¸°ì¤€ìœ¼ë¡œ ìš°ì¸¡ íšŒì „ í›„, ë‹¤ì‹œ ìê¸° ê¸°ì¤€ìœ¼ë¡œ ì¢Œì¸¡íšŒì „
 				node.setLeftNode(leftRotation(node.getLeftNode()));
 				temp = rightRotation(node);
 				this.root = temp;
@@ -59,22 +59,22 @@ public class AVLTree {
 			}
 		}	
 		
-		//¿ìÃøÀ¸·Î »¸Àº ÄÉÀÌ½º
+		//ìš°ì¸¡ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 		if(BF < -1)
 		{
-			//RR ¿À¸¥ÂÊ ¿À¸¥ÂÊÀ¸·Î »¸Àº ÄÉÀÌ½º
+			//RR ì˜¤ë¥¸ìª½ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 			if(node.getRightNode().getData().compareTo(data) < 0)
 			{
-				//ÁÂÃøÀ¸·Î ÇÑ¹ø È¸Àü
+				//ì¢Œì¸¡ìœ¼ë¡œ í•œë²ˆ íšŒì „
 				temp =  leftRotation(node);
 				this.root = temp;
 				return temp;
 			}
 			
-			//RL ¿À¸¥ÂÊ ¿ŞÂÊÀ¸·Î »¸Àº ÄÉÀÌ½º
+			//RL ì˜¤ë¥¸ìª½ ì™¼ìª½ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 			else
 			{
-				//±âÁ¸ ³ëµå left child¸¦ ±âÁØÀ¸·Î ÁÂÃøÀ¸·Î ÇÑ¹ø È¸ÀüÈÄ ´Ù½Ã ÀÚ±â ±âÁØÀ¸·Î ¿ìÃøÀ¸·Î È¸Àü
+				//ê¸°ì¡´ ë…¸ë“œ left childë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì¢Œì¸¡ìœ¼ë¡œ í•œë²ˆ íšŒì „í›„ ë‹¤ì‹œ ìê¸° ê¸°ì¤€ìœ¼ë¡œ ìš°ì¸¡ìœ¼ë¡œ íšŒì „
 				node.setRightNode(rightRotation(node.getRightNode()));
 				temp = leftRotation(node);
 				this.root = temp;
@@ -82,14 +82,14 @@ public class AVLTree {
 			}
 		}
 		
-		//Àç±ÍÀÇ ³¡¿¡ ·çÆ®³ëµå °»½Å
+		//ì¬ê·€ì˜ ëì— ë£¨íŠ¸ë…¸ë“œ ê°±ì‹ 
 		this.root = node;
 		
 		return node;
 	}
 	void insert(String data){
 		this.insert(this.root, data);
-		System.out.print(data + "»ğÀÔ\n");
+		System.out.print(data + "ì‚½ì…\n");
 	}
 	
 	private int getBF(Node node) {
@@ -99,29 +99,29 @@ public class AVLTree {
 		return getHeight(node.getLeftNode()) - getHeight(node.getRightNode());
 	}
 	
-	private Node rightRotation(Node node) { //ÆÄ¶ó¹ÌÅÍ -> ¿ìÃø È¸Àü¿¡¼­ °á°ú·Î ¿ìÃø child°¡ µÉ ³ëµå  
-		Node a = node.getLeftNode();  // ¿ìÃø È¸Àü¿¡¼­ parent°¡ µÇ¾î ¸®ÅÏµÉ ³ëµå
-		Node b = a.getRightNode();	//¿ìÃø È¸Àü¿¡¼­ nullÀÌ°Å³ª a ³ëµåÀÇ ¿ìÃø ¼­ºêÆ®¸®
+	private Node rightRotation(Node node) { //íŒŒë¼ë¯¸í„° -> ìš°ì¸¡ íšŒì „ì—ì„œ ê²°ê³¼ë¡œ ìš°ì¸¡ childê°€ ë  ë…¸ë“œ  
+		Node a = node.getLeftNode();  // ìš°ì¸¡ íšŒì „ì—ì„œ parentê°€ ë˜ì–´ ë¦¬í„´ë  ë…¸ë“œ
+		Node b = a.getRightNode();	//ìš°ì¸¡ íšŒì „ì—ì„œ nullì´ê±°ë‚˜ a ë…¸ë“œì˜ ìš°ì¸¡ ì„œë¸ŒíŠ¸ë¦¬
 		
-		a.setRightNode(node);	//a ¿ìÃø ³ëµå·Î aÀÇ parent ºÎ¸ğ¸¦ ³»¸®°í
-		node.setLeftNode(b);	//aÀÇ ¿ìÃø ¼­ºêÆ®¸®´Â aÀÇ parentº¸´Ù ÀÛÀ¸¹Ç·Î ´Ù½Ã parentÀÇ ÁÂÃø ¼­ºêÆ®¸®·Î ÀüÈ¯
+		a.setRightNode(node);	//a ìš°ì¸¡ ë…¸ë“œë¡œ aì˜ parent ë¶€ëª¨ë¥¼ ë‚´ë¦¬ê³ 
+		node.setLeftNode(b);	//aì˜ ìš°ì¸¡ ì„œë¸ŒíŠ¸ë¦¬ëŠ” aì˜ parentë³´ë‹¤ ì‘ìœ¼ë¯€ë¡œ ë‹¤ì‹œ parentì˜ ì¢Œì¸¡ ì„œë¸ŒíŠ¸ë¦¬ë¡œ ì „í™˜
 		
-		//³ôÀÌ Àç°è»ê
-		node.setHeight(Math.max(getHeight(node.getLeftNode()), getHeight(node.getRightNode())) + 1); //³»·Á¿Â ³ëµåÀÇ ³ôÀÌ
-		a.setHeight(Math.max(getHeight(a.getLeftNode()),getHeight(a.getRightNode()) + 1)); //»õ·Î ºÎ¸ğ°¡ µÈ ³ëµå
+		//ë†’ì´ ì¬ê³„ì‚°
+		node.setHeight(Math.max(getHeight(node.getLeftNode()), getHeight(node.getRightNode())) + 1); //ë‚´ë ¤ì˜¨ ë…¸ë“œì˜ ë†’ì´
+		a.setHeight(Math.max(getHeight(a.getLeftNode()),getHeight(a.getRightNode()) + 1)); //ìƒˆë¡œ ë¶€ëª¨ê°€ ëœ ë…¸ë“œ
 		
-		return a;	//ºÎ¸ğ³ëµå¸¦ ¹İÈ¯
+		return a;	//ë¶€ëª¨ë…¸ë“œë¥¼ ë°˜í™˜
 	}
 	
-	//rightrotationÀÌ¶û °°À½ ¹æÇâ¸¸ ¹İ´ë
+	//rightrotationì´ë‘ ê°™ìŒ ë°©í–¥ë§Œ ë°˜ëŒ€
 	private Node leftRotation(Node node) {	
 		Node a = node.getRightNode();
 		Node b = a.getLeftNode();
 		
-		//È¸Àü
+		//íšŒì „
 		a.setLeftNode(node);
 		node.setRightNode(b);
-		//±× ÈÄ,³ôÀÌ °è»ê
+		//ê·¸ í›„,ë†’ì´ ê³„ì‚°
 		node.setHeight(Math.max(getHeight(node.getLeftNode()), getHeight(node.getRightNode())) + 1);
 		a.setHeight(Math.max(getHeight(a.getLeftNode()), getHeight(a.getRightNode()) + 1)); 
 		
@@ -129,58 +129,58 @@ public class AVLTree {
 	}
 	
 	private Node Delete(Node node, String data) {
-		//¿ì¼± ÀÌÁøÆ®¸®ÀÇ »èÁ¦¸¦ ÁøÇà
+		//ìš°ì„  ì´ì§„íŠ¸ë¦¬ì˜ ì‚­ì œë¥¼ ì§„í–‰
 		
-		//°°Àº µ¥ÀÌÅÍ°¡ ¾øÀ» ¶§
+		//ê°™ì€ ë°ì´í„°ê°€ ì—†ì„ ë•Œ
 		if(node == null)
 			return node;
 		
-		//»çÀüÀûÀ¸·Î ¾Õ¿¡ ÀÖ´Â ÄÉÀÌ½º¸é ÁÂÃøÀ¸·Î
+		//ì‚¬ì „ì ìœ¼ë¡œ ì•ì— ìˆëŠ” ì¼€ì´ìŠ¤ë©´ ì¢Œì¸¡ìœ¼ë¡œ
 		if(node.getData().compareTo(data) > 0)
 			node.setLeftNode(Delete(node.getLeftNode(), data));
 		
-		//»çÀüÀûÀ¸·Î µÚ¿¡ ÀÖ´Â ÄÉÀÌ½º´Â ¿ìÃø
+		//ì‚¬ì „ì ìœ¼ë¡œ ë’¤ì— ìˆëŠ” ì¼€ì´ìŠ¤ëŠ” ìš°ì¸¡
 		else if(node.getData().compareTo(data) < 0)
 			node.setRightNode(Delete(node.getRightNode(), data));
 		
-		//°°Àº µ¥ÀÌÅÍ¸é »èÁ¦ ½ÇÇà
+		//ê°™ì€ ë°ì´í„°ë©´ ì‚­ì œ ì‹¤í–‰
 		else
 		{
-			//»èÁ¦ ½Ã ³ëµåÀÇ ÁÂÃø ¿ìÃø ³ëµå µÎ°³´Ù ÀÖ´Â ÄÉÀÌ½º
-			//¿ìÃø ¼­ºêÆ®¸®¿¡¼­ °¡Àå ÀÛÀº °ªÀ» À§·Î
+			//ì‚­ì œ ì‹œ ë…¸ë“œì˜ ì¢Œì¸¡ ìš°ì¸¡ ë…¸ë“œ ë‘ê°œë‹¤ ìˆëŠ” ì¼€ì´ìŠ¤
+			//ìš°ì¸¡ ì„œë¸ŒíŠ¸ë¦¬ì—ì„œ ê°€ì¥ ì‘ì€ ê°’ì„ ìœ„ë¡œ
 			if(node.getLeftNode() != null && node.getRightNode() != null)
 			{
-				//¿ìÃø ¼­ºêÆ®¸®ÀÇ °¡Àå ÀÛÀº °ªÀ» ±¸ÇÔ
+				//ìš°ì¸¡ ì„œë¸ŒíŠ¸ë¦¬ì˜ ê°€ì¥ ì‘ì€ ê°’ì„ êµ¬í•¨
 				Node temp = node.getRightNode();
 				while(temp.getLeftNode() != null)
 					temp = temp.getLeftNode();
 				
-				//±× °ªÀ» ÇöÀç ³ëµå°ªÀ¸·Î
+				//ê·¸ ê°’ì„ í˜„ì¬ ë…¸ë“œê°’ìœ¼ë¡œ
 				node.setData(temp.getData());
 				
-				//±× ÈÄ ¼­ºêÆ®¸® ¾Æ·¡ÀÇ °¡Àå ÀÛÀº °ªÀ» »èÁ¦ ¿¬»ê ÁøÇà
+				//ê·¸ í›„ ì„œë¸ŒíŠ¸ë¦¬ ì•„ë˜ì˜ ê°€ì¥ ì‘ì€ ê°’ì„ ì‚­ì œ ì—°ì‚° ì§„í–‰
 				node.setRightNode(Delete(node.getRightNode(), temp.getData()));
 			}
 			
-			//ÀÚ½Ä Áß ÇÏ³ª ÀÌ»óÀÌ nullÀÎ ³ëµå »èÁ¦ÇÏ´Â ÄÉÀÌ½º
+			//ìì‹ ì¤‘ í•˜ë‚˜ ì´ìƒì´ nullì¸ ë…¸ë“œ ì‚­ì œí•˜ëŠ” ì¼€ì´ìŠ¤
 			else if(node.getRightNode() == null || node.getLeftNode()== null)
 			{
 				Node temp = null;
 				
-				//ÇÏ³ª¸¸ ³ÎÀÎ ÄÉÀÌ½º && ÁÂÃøÀÌ ³ÎÀÎ
+				//í•˜ë‚˜ë§Œ ë„ì¸ ì¼€ì´ìŠ¤ && ì¢Œì¸¡ì´ ë„ì¸
 				if(node.getLeftNode() == null)
 				{
-					temp = node.getRightNode(); //ÀÓ½Ã ³ëµå¸¦ ¿ìÃø ÀÚ½ÄÀ¸·Î
-					node = temp;			//ÇöÀç ³ëµå¸¦ ¿ìÃø ÀÚ½ÄÀ¸·Î ¹Ù²Ş(ÇöÀç ³ëµå´Â »èÁ¦)
+					temp = node.getRightNode(); //ì„ì‹œ ë…¸ë“œë¥¼ ìš°ì¸¡ ìì‹ìœ¼ë¡œ
+					node = temp;			//í˜„ì¬ ë…¸ë“œë¥¼ ìš°ì¸¡ ìì‹ìœ¼ë¡œ ë°”ê¿ˆ(í˜„ì¬ ë…¸ë“œëŠ” ì‚­ì œ)
 				}
-				//ÇÏ³ª¸¸ ³ÎÀÎ ÄÉÀÌ½º && ¿ìÃøÀÌ ³ÎÀÎ
+				//í•˜ë‚˜ë§Œ ë„ì¸ ì¼€ì´ìŠ¤ && ìš°ì¸¡ì´ ë„ì¸
 				else 
 				{
-					temp = node.getLeftNode();	//¹İ´ë
+					temp = node.getLeftNode();	//ë°˜ëŒ€
 					node = temp;
 				}
-				//µÑ´Ù nullÀÎ ÄÉÀÌ½º
-				//³ëµå¸¸ »èÁ¦
+				//ë‘˜ë‹¤ nullì¸ ì¼€ì´ìŠ¤
+				//ë…¸ë“œë§Œ ì‚­ì œ
 				if(temp == null)
 					node = null;
 					
@@ -191,29 +191,29 @@ public class AVLTree {
 		if(node == null)
 			return node;
 			
-		//»èÁ¦°¡ ³¡³ª¸é ³ôÀÌ ¿¬»ê ´Ù½Ã
+		//ì‚­ì œê°€ ëë‚˜ë©´ ë†’ì´ ì—°ì‚° ë‹¤ì‹œ
 		node.setHeight(Math.max(getHeight(node.getLeftNode()), getHeight(node.getRightNode()))+1);
 		
-		//±×ÈÄ ´Ù½Ã ¸®¹ë·±½Ì
+		//ê·¸í›„ ë‹¤ì‹œ ë¦¬ë°¸ëŸ°ì‹±
 		int BF = getBF(node);	
 		Node temp = null;
 		
-		//ÁÂÃøÀ¸·Î »¸Àº ÄÉÀÌ½º
+		//ì¢Œì¸¡ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 		if(BF > 1)	
 		{
-			//LL ¿ŞÂÊ ¿ŞÂÊÀ¸·Î »¸Àº ÄÉÀÌ½º
+			//LL ì™¼ìª½ ì™¼ìª½ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 			if(getBF(node.getLeftNode()) >= 0)
 			{
-				//¿ìÃøÀ¸·Î ÇÑ¹ø È¸Àü
+				//ìš°ì¸¡ìœ¼ë¡œ í•œë²ˆ íšŒì „
 				temp = rightRotation(node);
 				this.root = temp;
 				return temp;
 			}
 			
-			//LR ¿ŞÂÊ ¿À¸¥ÂÊÀ¸·Î »¸Àº ÄÉÀÌ½º
+			//LR ì™¼ìª½ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 			else 
 			{
-				//±âÁ¸ ³ëµåÀÇ rightchild¸¦ ±âÁØÀ¸·Î ¿ìÃø È¸Àü ÈÄ, ´Ù½Ã ÀÚ±â ±âÁØÀ¸·Î ÁÂÃøÈ¸Àü
+				//ê¸°ì¡´ ë…¸ë“œì˜ rightchildë¥¼ ê¸°ì¤€ìœ¼ë¡œ ìš°ì¸¡ íšŒì „ í›„, ë‹¤ì‹œ ìê¸° ê¸°ì¤€ìœ¼ë¡œ ì¢Œì¸¡íšŒì „
 				node.setLeftNode(leftRotation(node.getLeftNode()));
 				temp = rightRotation(node);
 				this.root = temp;
@@ -221,29 +221,29 @@ public class AVLTree {
 			}	
 		}	
 			
-		//¿ìÃøÀ¸·Î »¸Àº ÄÉÀÌ½º
+		//ìš°ì¸¡ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 		if(BF < -1)
 		{
-			//RR ¿À¸¥ÂÊ ¿À¸¥ÂÊÀ¸·Î »¸Àº ÄÉÀÌ½º
+			//RR ì˜¤ë¥¸ìª½ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 			if(getBF(node.getRightNode()) <= 0)
 			{
-				//ÁÂÃøÀ¸·Î ÇÑ¹ø È¸Àü
+				//ì¢Œì¸¡ìœ¼ë¡œ í•œë²ˆ íšŒì „
 				temp = leftRotation(node);
 				this.root = temp;
 				return temp;
 			}
 			
-			//RL ¿À¸¥ÂÊ ¿ŞÂÊÀ¸·Î »¸Àº ÄÉÀÌ½º
+			//RL ì˜¤ë¥¸ìª½ ì™¼ìª½ìœ¼ë¡œ ë»—ì€ ì¼€ì´ìŠ¤
 			else
 			{
-				//±âÁ¸ ³ëµå left child¸¦ ±âÁØÀ¸·Î ÁÂÃøÀ¸·Î ÇÑ¹ø È¸ÀüÈÄ ´Ù½Ã ÀÚ±â ±âÁØÀ¸·Î ¿ìÃøÀ¸·Î È¸Àü
+				//ê¸°ì¡´ ë…¸ë“œ left childë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì¢Œì¸¡ìœ¼ë¡œ í•œë²ˆ íšŒì „í›„ ë‹¤ì‹œ ìê¸° ê¸°ì¤€ìœ¼ë¡œ ìš°ì¸¡ìœ¼ë¡œ íšŒì „
 				node.setRightNode(rightRotation(node.getRightNode()));
 				temp =  leftRotation(node);
 				this.root  = temp;
 				return temp;
 			}
 		}
-		//·çÆ® °»½Å
+		//ë£¨íŠ¸ ê°±ì‹ 
 		this.root = node;
 		
 		return node;
@@ -272,7 +272,7 @@ public class AVLTree {
 		
 		return node.getHeight();
 	}
-	/*------------------------³ëµå Å¬·¡½º---------------------------*/
+	/*------------------------ë…¸ë“œ í´ë˜ìŠ¤---------------------------*/
 	public class Node{
 		private Node left;
 		private Node right;
@@ -320,7 +320,7 @@ public class AVLTree {
 			return this.height;
 		}
 	}
-	/*--------------------³ëµå Å¬·¡½º---------------------------*/
+	/*--------------------Class Main---------------------------*/
 	public static void main(String[] args) {
 		AVLTree AVL = new AVLTree();
 
@@ -346,24 +346,24 @@ public class AVLTree {
 
 /*while(true)
 {
-	if(curnode.getData().compareTo(data) > 0) //data°¡ »çÀüÀûÀ¸·Î ¾ÕÀ¸·Î ÀÖ´Â ÄÉÀÌ½º
+	if(curnode.getData().compareTo(data) > 0) //dataê°€ ì‚¬ì „ì ìœ¼ë¡œ ì•ìœ¼ë¡œ ìˆëŠ” ì¼€ì´ìŠ¤
 	{	
-		if(curnode.getLeftNode() != null)	//´ÙÀ½ ³ëµå°¡ ÀÖ´Ù¸é ±× ³ëµå·Î ÀÌµ¿ÇÏ¿© ºñ±³
+		if(curnode.getLeftNode() != null)	//ë‹¤ìŒ ë…¸ë“œê°€ ìˆë‹¤ë©´ ê·¸ ë…¸ë“œë¡œ ì´ë™í•˜ì—¬ ë¹„êµ
 			curnode = curnode.getLeftNode();
 		
-		else	//´ÙÀ½ ³ëµå°¡ nullÀÌ¶ó¸é ÇØ´ç À§Ä¡°¡ ÇöÀç ³ëµå°¡ µé¾î°¥ À§Ä¡
+		else	//ë‹¤ìŒ ë…¸ë“œê°€ nullì´ë¼ë©´ í•´ë‹¹ ìœ„ì¹˜ê°€ í˜„ì¬ ë…¸ë“œê°€ ë“¤ì–´ê°ˆ ìœ„ì¹˜
 		{
 			curnode.setLeftNode(insertnode);
 			insertnode.setParent(curnode);
 			break;
 		}
 	}
-	else if(curnode.getData().compareTo(data) < 0) //data°¡ »çÀüÀûÀ¸·Î µÚ¿¡ÀÖ´Â ÄÉÀÌ½º
+	else if(curnode.getData().compareTo(data) < 0) //dataê°€ ì‚¬ì „ì ìœ¼ë¡œ ë’¤ì—ìˆëŠ” ì¼€ì´ìŠ¤
 	{
-		if(curnode.getRightNode() != null) //´ÙÀ½ ³ëµå°¡ ÀÖ´Ù¸é ±× ³ëµå·Î ÀÌµ¿ÇÏ¿© ºñ±³
+		if(curnode.getRightNode() != null) //ë‹¤ìŒ ë…¸ë“œê°€ ìˆë‹¤ë©´ ê·¸ ë…¸ë“œë¡œ ì´ë™í•˜ì—¬ ë¹„êµ
 			curnode = curnode.getRightNode();
 		
-		else	//´ÙÀ½ ³ëµå°¡ nullÀÌ¶ó¸é ÇØ´ç À§Ä¡°¡ ÇöÀç ³ëµå°¡ µé¾î°¥ À§Ä¡
+		else	//ë‹¤ìŒ ë…¸ë“œê°€ nullì´ë¼ë©´ í•´ë‹¹ ìœ„ì¹˜ê°€ í˜„ì¬ ë…¸ë“œê°€ ë“¤ì–´ê°ˆ ìœ„ì¹˜
 		{
 			curnode.setRightNode(insertnode);
 			insertnode.setParent(curnode);
@@ -371,4 +371,4 @@ public class AVLTree {
 		}
 	}
 	else
-		return; //Áßº¹Å°¿¡ ´ëÇØ¼­´Â »ğÀÔ x*/
+		return; //ì¤‘ë³µí‚¤ì— ëŒ€í•´ì„œëŠ” ì‚½ì… x*/
